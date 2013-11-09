@@ -10,20 +10,21 @@ import sh.calaba.instrumentationbackend.actions.Action;
  * 
  * @author Nicholas Albion
  */
-public class TapMapMarker implements Action {
+public class TapMap implements Action {
 
 	@Override
 	public Result execute(String... args) {
-		String title = args[0];
-		long timeout = (args.length > 1) ? Long.parseLong(args[1]) : 10000;
-		if( InstrumentationBackend.solo.tapMapMarkerItem(title, timeout) ) {
+		double lat = Double.parseDouble(args[0]);
+		double lon = Double.parseDouble(args[1]);
+		long timeout = (args.length > 2) ? Long.parseLong(args[2]) : 10000;
+		if( InstrumentationBackend.solo.tapMap(lat, lon, timeout) ) {
 			return Result.successResult();
 		}
-		return new Result(false, "Could not find marker '" + title + "' to tap after waiting " + timeout + " ms");
+		return new Result(false, "Could not tap map at '" + lat + ", " + lon + "' to tap after waiting " + timeout + " ms");
 	}
 
 	@Override
 	public String key() {
-		return "tap_map_marker_by_title";
+		return "tap_map_at_position";
 	}
 }

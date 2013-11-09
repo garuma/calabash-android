@@ -37,6 +37,8 @@
 
     <path id="android.target.classpath">
       <fileset dir="${env.ANDROID_HOME}/platforms/android-${android.api.level}/" includes="*.jar"/>
+      <fileset dir="${env.ANDROID_HOME}/extras/google/google_play_services/libproject/google-play-services_lib/libs/" includes="*.jar"/>
+      <pathelement path="${env.ANDROID_HOME}/tools/support/annotations.jar" />
     </path>
 
     <target name="-check.preconditions">

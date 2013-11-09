@@ -10,7 +10,7 @@ public class SoloEnhanced extends Solo {
 
 	public SoloEnhanced(Instrumentation instrumentation, Activity activity) {
 		super(instrumentation, activity);
-		this.mapViewUtils = new MapViewUtils(instrumentation, viewFetcher, sleeper, waiter);
+		this.mapViewUtils = new MapViewUtils(instrumentation, viewFetcher, sleeper, waiter, clicker);
 	}
     public ActivityUtils getActivityUtils() {
         return activityUtils;
@@ -45,25 +45,13 @@ public class SoloEnhanced extends Solo {
 		return mapViewUtils.getZoom();
 	}
 
-	public List<String> getMapMarkerItems() {
-		return mapViewUtils.getMarkerItems();
-	}
-
-	public String getMapMarkerItem( String title ) {
-		return mapViewUtils.getMarkerItem( title );
-	}
-
 	/**
 	 * @param title
 	 * @param timeout in ms
 	 * @return
 	 */
-	public boolean tapMapMarkerItem( String title, long timeout ) {
-		return mapViewUtils.tapMarkerItem( title, timeout );
-	}
-
-	public boolean tapMapAwayFromMarkers( int step ) {
-		return mapViewUtils.tapAwayFromMarkerItems( step );
+	public boolean tapMap( double lat, double lon, long timeout ) {
+		return mapViewUtils.tapMapAt( lat, lon, timeout );
 	}
 
 	/**
