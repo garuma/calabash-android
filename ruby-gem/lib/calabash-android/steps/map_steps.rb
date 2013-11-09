@@ -22,6 +22,10 @@ Then /^the map zoom level should be (\d+)$/ do | zoom |
   raise StandardError.new( "The map's zoom level should be #{zoom} but is #{result['message']}"  ) unless zoom.eql?( result['message'] )
 end
 
+When /^I tap the map at (-?\d+\.\d+), (-?\d+\.\d+)$/ do | lat, lon |
+  performAction('tap_map_at_position', lat, lon, 60000)
+end
+
 When /^I tap the map marker "([^\"]*)"$/ do | marker_title |
   performAction('tap_map_marker_by_title', marker_title, 60000)
 end
