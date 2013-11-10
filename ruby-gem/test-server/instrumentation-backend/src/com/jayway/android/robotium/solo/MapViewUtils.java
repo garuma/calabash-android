@@ -96,19 +96,32 @@ public class MapViewUtils {
 		return bounds;
 	}
 
-	public boolean tapMapAt(double lat, double lon, long timeout) {
-		MapView mapView = getMapView();
-		GoogleMap map = mapView.getMap();
-		LatLng location = new LatLng(lat, lon);
-		Projection proj = map.getProjection();
-		
-		// Try not to change the map but if the location is not within screen realm we have to
-		if (!proj.getVisibleRegion().latLngBounds.contains(location))
-			map.moveCamera(CameraUpdateFactory.newLatLng(location));
-		
-		proj = map.getProjection();
-		Point coordinates = proj.toScreenLocation(location);
-		clicker.clickOnScreen(mapView.getLeft() + coordinates.x, mapView.getTop() + coordinates.y);
+	public boolean tapMapAt(final double lat, final double lon, final long timeout) {
+		final Point coordinates = new Point ();
+
+		inst.runOnMainSync(new Runnable() {
+			@Override
+			public void run() {
+				MapView mapView = getMapView();
+				GoogleMap map = mapView.getMap();
+				LatLng location = new LatLng(lat, lon);
+
+				Projection proj = map.getProjection();
+
+				// Try not to change the map but if the location is not within screen realm we have to
+				if (!proj.getVisibleRegion().latLngBounds.contains(location))
+					map.moveCamera(CameraUpdateFactory.newLatLng(location));
+
+				proj = map.getProjection();
+				Point c = proj.toScreenLocation(location);
+				int[] viewOnScreen = new int[2];
+				mapView.getLocationOnScreen(viewOnScreen);
+				coordinates.set(c.x + viewOnScreen[0], c.y + viewOnScreen[1]);
+			}
+		});
+
+		clicker.clickOnScreen(coordinates.x, coordinates.y);
+
 		return true;
 	}
 }
