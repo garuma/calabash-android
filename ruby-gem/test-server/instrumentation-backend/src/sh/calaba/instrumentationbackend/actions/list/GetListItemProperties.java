@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import sh.calaba.instrumentationbackend.InstrumentationBackend;
 import sh.calaba.instrumentationbackend.Result;
+import sh.calaba.instrumentationbackend.TestHelpers;
 import sh.calaba.instrumentationbackend.actions.Action;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -44,25 +45,12 @@ public class GetListItemProperties implements Action {
 
 	@Override
 	public Result execute(String... args) {
-		int listIndex;
-		int rowIndex = -1;
+		int rowIndex = Integer.parseInt(args[0]);
 
-		if( args.length == 0 ) {
-			listIndex = 0;
-		} else {
-			if( args.length > 1 ) {
-				rowIndex = (Integer.parseInt(args[1]) - 1);
-			}
-			listIndex = (Integer.parseInt(args[0]) - 1);
-		}
+		ListView list = (ListView)TestHelpers.getViewById(args[1]);
+		if (list == null)
+			return new Result(false, "Could not find list with id" + args[1]);
 
-
-		ArrayList<ListView> listViews = InstrumentationBackend.solo.getCurrentViews(ListView.class);
-		if( listViews == null || listViews.size() <= listIndex ) {
-			return new Result(false, "Could not find list #" + (listIndex + 1));
-		}
-
-		ListView list = listViews.get(listIndex);
 		Result result = new Result(true);
 
 		if( rowIndex < 0 ) {
