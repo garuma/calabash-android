@@ -86,8 +86,16 @@ public class TestHelpers {
             // Assume this is an "R.id.<name>" string.
         }
 
+        String androidPackage = null;
+        if (resName.indexOf(':') != -1) {
+            int index = resName.indexOf(':');
+            androidPackage = resName.substring(0, index);
+            resName = resName.substring(index + 1);
+        }
         final Activity activity = InstrumentationBackend.solo.getCurrentActivity();
-        return activity.getResources().getIdentifier(resName, "id", activity.getPackageName());
+        if (androidPackage == null)
+            androidPackage = activity.getPackageName();
+        return activity.getResources().getIdentifier(resName, "id", androidPackage);
     }
 
     public static Drawable getDrawableById(String resName) {
