@@ -7,7 +7,11 @@ import sh.calaba.instrumentationbackend.actions.Action;
 public class PressHomeButton implements Action {
 	@Override
     public Result execute(String... args) {
-        InstrumentationBackend.solo.clickOnActionBarHomeButton ();
+		InstrumentationBackend.instrumentation.runOnMainSync(new Runnable() {
+			public void run() {
+				InstrumentationBackend.solo.clickOnActionBarHomeButton ();
+			}
+		});
         return Result.successResult();
     }
 
